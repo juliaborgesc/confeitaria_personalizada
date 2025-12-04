@@ -4,8 +4,60 @@ class IngredientesRepository:
     def __init__(self, db):
         self.db = db
 
-    # Aqui vocês acham que precisa criar mais métodos para cada tipo de ingrediente??? não
     # Massas:
+    def criar_massa(self, massa: Massa) -> str:
+        query = """
+            INSERT INTO massas (nome, status_disponibilidade)
+            VALUES (%s, %s)
+            RETURNING id_massa
+        """
+
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, (
+            massa.nome,
+            massa.status_disponibilidade
+        ))
+
+        novo_id = cursor.fetchone()[0]
+        conn.commit()
+
+        cursor.close()
+        return novo_id
+    
+    def apagar_massa(self, id_massa: str) -> None:
+        query = "DELETE FROM massas WHERE id_massa = %s"
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute(query, (id_massa,))
+        conn.commit()
+        cursor.close()
+
+        return None
+    
+    def atualizar_massa(self, massa: Massa) -> None:
+        query = """
+            UPDATE massas
+            SET nome = %s,
+                status_disponibilidade = %s
+            WHERE id_massa = %s
+        """
+
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, (
+            massa.nome,
+            massa.status_disponibilidade,
+            massa.id_massa
+        ))
+        conn.commit()
+        cursor.close()
+        
+        return None
+    
     def listar_massas(self):
         conn = self.db.get_connection()
         cursor = conn.cursor()
