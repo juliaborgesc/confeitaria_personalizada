@@ -17,5 +17,5 @@ class ProdutoPersonalizavel(Produto):
         self.cobertura = cobertura
         
 
-        def __str__(self):
-            return f"{self.id_produto} - {self.nome} (R${self.valor_final}) - Tamanho: {self.tamanho}"
+    def __str__(self):
+        return f"{self.id_produto} - {self.nome} (R${self.valor_final}) - Tamanho: {self.tamanho}"

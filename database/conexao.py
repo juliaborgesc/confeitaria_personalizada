@@ -23,7 +23,7 @@ class Database:
                 user=self.user,
                 password=self.password,
                 port=self.port,
-                sslmode="require"   # Supabase exige SSL
+                sslmode="require"   
             )
             
             return self.connection

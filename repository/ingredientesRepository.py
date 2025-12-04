@@ -4,7 +4,7 @@ class IngredientesRepository:
     def __init__(self, db):
         self.db = db
 
-    # Aqui vocês acham que precisa criar mais métodos para cada tipo de ingrediente???
+    # Aqui vocês acham que precisa criar mais métodos para cada tipo de ingrediente??? não
     # Massas:
     def listar_massas(self):
         conn = self.db.get_connection()
