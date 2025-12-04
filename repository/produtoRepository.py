@@ -4,7 +4,7 @@ class ProdutoRepository:
     def __init__(self, db):
         self.db = db
 
-    def criar_produto(self, produto: Produto) -> int:
+    def criar_produto(self, produto: Produto) -> str:
         query = """
             INSERT INTO produtos (nome, descricao, valor_base, status_disponibilidade)
             VALUES (%s, %s, %s, %s)
@@ -43,7 +43,7 @@ class ProdutoRepository:
 
         return [Produto(*linha) for linha in produtos]
 
-    def buscar_produto(self, id_produto: int):
+    def buscar_produto(self, id_produto: int) -> Produto:
         query = """
             SELECT id_produto, nome, descricao, valor_base, status_disponibilidade
             FROM produtos
@@ -60,7 +60,7 @@ class ProdutoRepository:
 
         return Produto(*linha) if linha else None
 
-    def atualizar_produto(self, produto: Produto):
+    def atualizar_produto(self, produto: Produto) -> None:
         query = """
             UPDATE produtos
             SET nome = %s,
@@ -84,7 +84,7 @@ class ProdutoRepository:
         conn.commit()
         cursor.close()
 
-    def excluir_produto(self, id_produto: int):
+    def excluir_produto(self, id_produto: int) -> None:
         query = "DELETE FROM produtos WHERE id_produto = %s"
 
         conn = self.db.get_connection()
