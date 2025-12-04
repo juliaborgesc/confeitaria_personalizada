@@ -1,5 +1,6 @@
 from model.produtoModel import Produto
 
+
 class ProdutoNaoPersonalizavel(Produto):
     def __init__(self, id_produto, nome, descricao, valor_base, status_disponibilidade):
         
