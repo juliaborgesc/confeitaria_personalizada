@@ -1,7 +1,5 @@
 from model.produtoNaoPersonalizavelModel import Bebidas, BoloPronto, ItensFesta
 
-
-# QUASE CERTEZA QUE ISSO TA ERRADO
 class BebidasRepository:
     def __init__(self, db):
         self.db = db
