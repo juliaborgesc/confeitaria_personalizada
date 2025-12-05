@@ -56,15 +56,26 @@ esperar aparecer no GitHub.
 Se ao abrir o repositório online você não vê nada novo, é porque o branch local `work` ainda não foi enviado. Para publicar
 as alterações no GitHub:
 
-1. **Adicione o remoto** (substitua pela URL do seu fork, caso use outro usuário):
+1. **Confirme qual remoto está configurado** (o comando deve listar `origin` apontando para o repositório desejado):
    ```bash
-   git remote add origin https://github.com/livia-rosario/confeitaria_personalizada.git
+   git remote -v
    ```
+   - Se não existir nenhum remoto, adicione-o (substitua pela URL do seu fork, caso use outro usuário):
+     ```bash
+     git remote add origin https://github.com/livia-rosario/confeitaria_personalizada.git
+     ```
 
 2. **Envie o branch `work`** com as atualizações:
    ```bash
    git push -u origin work
    ```
+   - Se aparecer `error: failed to push some refs`, primeiro baixe o histórico remoto e tente de novo:
+     ```bash
+     git pull --rebase origin work
+     git push origin work
+     ```
+   - Caso o branch remoto não exista ainda, o primeiro `git push -u origin work` deve criá-lo. O `-u` configura o upstream,
+     permitindo usar apenas `git push` ou `git pull` nos próximos envios.
 
 Depois disso, recarregue a página do repositório ou abra um Pull Request a partir do branch `work` para que o GitHub mostre
 os commits recentes.
