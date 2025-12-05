@@ -36,3 +36,17 @@
 
 O script cria uma massa temporária, confirma que ela aparece na listagem e depois a apaga, permitindo validar rapidamente se as
 operações básicas do repositório estão funcionando com o banco configurado.
+
+## Onde encontrar as mudanças feitas
+
+Todas as alterações anteriores estão no próprio repositório, nos arquivos abaixo (abra-os no editor ou visualize pelo GitHub
+após enviar/atualizar o branch):
+
+- `database/conexao.py`: helper para abrir conexão usando as variáveis de ambiente.
+- `database/schema.sql`: definição completa das tabelas usadas pelo app.
+- `repository/ingredientesRepository.py`: ajustes nos CRUDs para massa, recheio e cobertura.
+- `scripts/smoke_test_ingredientes.py`: roteiro simples para inserir/listar/remover uma massa de teste.
+- `.env.example`: exemplo das variáveis Supabase para copiar para `.env`.
+
+Se você clonar ou baixar o projeto, essas mudanças já estão na árvore de código e podem ser vistas localmente sem precisar
+esperar aparecer no GitHub.
