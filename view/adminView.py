@@ -1,7 +1,7 @@
 from database.conexao import Database
-from controller.ingredientes_controller import IngredientesController
-from controller.produtos_controller import ProdutosController
-from controller.tamanho_controller import TamanhoController
+from controller.ingredientesController import IngredientesController
+from controller.produtosController import ProdutosController
+from controller.tamanhosController import TamanhoController
 
 class MenuAdmin:
     def __init__(self):

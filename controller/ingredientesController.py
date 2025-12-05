@@ -1,5 +1,5 @@
-from repository.ingredientes_repository import IngredientesRepository
-from model.ingredientes_model import Massa, Recheio, Cobertura, Topping
+from repository.ingredientesRepository import IngredientesRepository
+from model.ingredientesModel import Massa, Recheio, Cobertura, Topping
 
 class IngredientesController:
     def __init__(self, db):
@@ -335,7 +335,7 @@ class IngredientesController:
             elif opcao == "0":
                 break
             else:
-                print("\n❌ Opção inválida!")
+                print("\nOpção inválida!")
 
     def listar_toppings(self):
         print("\n--- LISTA DE TOPPINGS ---")
@@ -351,7 +351,7 @@ class IngredientesController:
         id_topping = input("\nDigite o ID do topping: ").strip()
         topping = self.repo.buscar_topping_por_id(id_topping)
         if topping:
-            status = "✓ Disponível" if topping.status_disponibilidade else " Indisponível"
+            status = " Disponível" if topping.status_disponibilidade else " Indisponível"
             print(f"\nID: {topping.id_topping}")
             print(f"Nome: {topping.nome}")
             print(f"Valor Adicional: R$ {topping.valor_adc:.2f}")
