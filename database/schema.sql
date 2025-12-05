@@ -1,5 +1,7 @@
--- Schema for confeitaria_personalizada PostgreSQL database
 -- Defines tables and constraints so that relational dependencies are respected.
+
+-- Enable UUID generation for primary keys
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Independent reference tables
 CREATE TABLE IF NOT EXISTS cliente (
@@ -7,26 +9,26 @@ CREATE TABLE IF NOT EXISTS cliente (
 );
 
 CREATE TABLE IF NOT EXISTS massa (
-    id_massa VARCHAR PRIMARY KEY,
+    id_massa UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR,
     status_disponibilidade BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS recheio (
-    id_recheio VARCHAR PRIMARY KEY,
+    id_recheio UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR,
-    valor_adc NUMERIC,
+    valor_adicional NUMERIC,
     status_disponibilidade BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS cobertura (
-    id_cobertura VARCHAR PRIMARY KEY,
+    id_cobertura UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR,
     status_disponibilidade BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS topping (
-    id_topping VARCHAR PRIMARY KEY,
+    id_topping UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR,
     status_disponibilidade BOOLEAN,
     valor_adc NUMERIC DEFAULT 0
@@ -39,7 +41,7 @@ CREATE TABLE IF NOT EXISTS tamanho (
 );
 
 CREATE TABLE IF NOT EXISTS produto (
-    id_produto VARCHAR PRIMARY KEY,
+    id_produto UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR,
     descricao VARCHAR,
     valor_base NUMERIC,
@@ -54,34 +56,34 @@ CREATE TABLE IF NOT EXISTS kv_store_e586621a (
 
 -- Non-personalized product specializations
 CREATE TABLE IF NOT EXISTS produto_naopersonalizavel (
-    fk_produto_id_produto VARCHAR PRIMARY KEY,
+    fk_produto_id_produto UUID PRIMARY KEY,
     CONSTRAINT fk_pnp_produto FOREIGN KEY (fk_produto_id_produto) REFERENCES produto (id_produto)
 );
 
 CREATE TABLE IF NOT EXISTS bebidas (
-    fk_produto_naopersonalizavel VARCHAR PRIMARY KEY,
+    fk_produto_naopersonalizavel UUID PRIMARY KEY,
     CONSTRAINT fk_bebidas_pnp FOREIGN KEY (fk_produto_naopersonalizavel) REFERENCES produto_naopersonalizavel (fk_produto_id_produto)
 );
 
 CREATE TABLE IF NOT EXISTS bolo_pronto (
-    fk_produto_naopersonalizavel VARCHAR PRIMARY KEY,
+    fk_produto_naopersonalizavel UUID PRIMARY KEY,
     CONSTRAINT fk_bolopronto_pnp FOREIGN KEY (fk_produto_naopersonalizavel) REFERENCES produto_naopersonalizavel (fk_produto_id_produto)
 );
 
 CREATE TABLE IF NOT EXISTS itens_festa (
-    fk_produto_naopersonalizavel VARCHAR PRIMARY KEY,
+    fk_produto_naopersonalizavel UUID PRIMARY KEY,
     CONSTRAINT fk_itens_pnp FOREIGN KEY (fk_produto_naopersonalizavel) REFERENCES produto_naopersonalizavel (fk_produto_id_produto)
 );
 
 -- Personalized product specialization
 CREATE TABLE IF NOT EXISTS produto_personalizavel (
-    fk_produto_id_produto VARCHAR PRIMARY KEY,
+    fk_produto_id_produto UUID PRIMARY KEY,
     valor_final NUMERIC,
-    fk_massa VARCHAR,
-    fk_recheio1 VARCHAR,
-    fk_recheio2 VARCHAR,
-    fk_cobertura VARCHAR,
-    fk_topping VARCHAR,
+    fk_massa UUID,
+    fk_recheio1 UUID,
+    fk_recheio2 UUID,
+    fk_cobertura UUID,
+    fk_topping UUID,
     fk_tamanho VARCHAR,
     CONSTRAINT fk_pp_produto FOREIGN KEY (fk_produto_id_produto) REFERENCES produto (id_produto),
     CONSTRAINT fk_pp_massa FOREIGN KEY (fk_massa) REFERENCES massa (id_massa),
@@ -94,7 +96,7 @@ CREATE TABLE IF NOT EXISTS produto_personalizavel (
 
 -- Orders and items
 CREATE TABLE IF NOT EXISTS pedido (
-    id_pedido VARCHAR PRIMARY KEY,
+    id_pedido UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     status_pedido VARCHAR,
     valor_total NUMERIC,
     forma_pagamento VARCHAR,
@@ -107,11 +109,11 @@ CREATE TABLE IF NOT EXISTS pedido (
 );
 
 CREATE TABLE IF NOT EXISTS item_pedido (
-    id_itempedido VARCHAR PRIMARY KEY,
+    id_itempedido UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     quantidade INTEGER,
     valor_item NUMERIC,
-    fk_pedido VARCHAR,
-    fk_produto VARCHAR,
+    fk_pedido UUID,
+    fk_produto UUID,
     CONSTRAINT fk_itempedido_pedido FOREIGN KEY (fk_pedido) REFERENCES pedido (id_pedido),
     CONSTRAINT fk_itempedido_produto FOREIGN KEY (fk_produto) REFERENCES produto (id_produto)
 );

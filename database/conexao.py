@@ -34,3 +34,9 @@ class Database:
 
     def criar_connection(self) -> psycopg2.Connection:
         return self.conectar()
+
+    def get_connection(self) -> psycopg2.Connection:
+        if self.connection is None or self.connection.closed:
+            return self.conectar()
+
+        return self.connection
