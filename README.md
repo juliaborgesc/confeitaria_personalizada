@@ -50,3 +50,21 @@ após enviar/atualizar o branch):
 
 Se você clonar ou baixar o projeto, essas mudanças já estão na árvore de código e podem ser vistas localmente sem precisar
 esperar aparecer no GitHub.
+
+## Como enviar as mudanças para o GitHub
+
+Se ao abrir o repositório online você não vê nada novo, é porque o branch local `work` ainda não foi enviado. Para publicar
+as alterações no GitHub:
+
+1. **Adicione o remoto** (substitua pela URL do seu fork, caso use outro usuário):
+   ```bash
+   git remote add origin https://github.com/livia-rosario/confeitaria_personalizada.git
+   ```
+
+2. **Envie o branch `work`** com as atualizações:
+   ```bash
+   git push -u origin work
+   ```
+
+Depois disso, recarregue a página do repositório ou abra um Pull Request a partir do branch `work` para que o GitHub mostre
+os commits recentes.
