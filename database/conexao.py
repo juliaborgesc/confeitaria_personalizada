@@ -12,7 +12,7 @@ class Database:
         self.user = os.getenv("SUPABASE_USER")
         self.password = os.getenv("SUPABASE_PASSWORD")
         self.port = os.getenv("SUPABASE_PORT")
-        
+
         self.connection = None
 
     def conectar(self) -> psycopg2.Connection:
@@ -23,14 +23,20 @@ class Database:
                 user=self.user,
                 password=self.password,
                 port=self.port,
-                sslmode="require"   
+                sslmode="require",
             )
-            
+
             return self.connection
-        
+
         except psycopg2.OperationalError as err:
             print(f"Erro ao conectar: {err}")
             return None
-            
+
     def criar_connection(self) -> psycopg2.Connection:
         return self.conectar()
+
+    def get_connection(self) -> psycopg2.Connection:
+        if self.connection is None or self.connection.closed:
+            return self.conectar()
+
+        return self.connection
