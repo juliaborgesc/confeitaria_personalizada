@@ -5,7 +5,7 @@ class Massa():
         self.status_disponibilidade = status_disponibilidade
 
 class Recheio():
-    def __init__(self, id_recheio: str,nome: str, status_disponibilidade: bool, valor_adc: float):
+    def __init__(self, id_recheio: str, nome: str, status_disponibilidade: bool, valor_adc: float):
         self.id_recheio = id_recheio
         self.nome = nome
         self.status_disponibilidade = status_disponibilidade

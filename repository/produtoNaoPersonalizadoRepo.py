@@ -1,7 +1,5 @@
 from model.produtoNaoPersonalizavelModel import Bebidas, BoloPronto, ItensFesta
 
-
-# QUASE CERTEZA QUE ISSO TA ERRADO
 class BebidasRepository:
     def __init__(self, db):
         self.db = db
@@ -60,11 +58,10 @@ class BebidasRepository:
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO produto (id_produto, nome, descricao, valor_base, status_disponibilidade)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO produto (nome, descricao, valor_base, status_disponibilidade)
+            VALUES (%s, %s, %s, %s)
             RETURNING id_produto;
         """, (
-            bebida.id_produto,
             bebida.nome,
             bebida.descricao,
             bebida.valor_base,
@@ -85,3 +82,119 @@ class BebidasRepository:
         conn.commit()
         cursor.close()
         return id_produto
+
+    def deletar_bebida(self, id_produto: str) -> None:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("DELETE FROM produto WHERE id_produto = %s", (id_produto,))
+        conn.commit()
+        cursor.close()
+        
+        return None
+    
+    def atualizar_bebida(self, bebida: Bebidas) -> None:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            UPDATE produto
+            SET nome = %s,
+                descricao = %s,
+                valor_base = %s,
+                status_disponibilidade = %s
+            WHERE id_produto = %s
+            """, (
+                bebida.nome,
+                bebida.descricao,
+                bebida.valor_base,
+                bebida.status_disponibilidade,
+                bebida.id_produto
+            ))
+        conn.commit()
+        cursor.close()
+        
+        return None
+    
+class ItensFestaRepository:
+    def __init__(self, db):
+        self.db = db
+        
+    def listar_itens_festa(self) -> list[ItensFesta]:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = """
+        SELECT
+            p.id_produto,
+            p.nome,
+            p.descricao,
+            p.valor_base,
+            p.status_disponibilidade
+        FROM produto p
+        JOIN produto_naopersonalizavel np
+            ON np.fk_produto_id_produto = p.id_produto
+        JOIN itens_festa i
+            ON i.fk_produto_naopersonalizavel = p.id_produto;
+        """
+        
+        cursor.execute(query)
+        linhas = cursor.fetchall()
+        cursor.close()
+
+        return [ItensFesta(*linha) for linha in linhas]
+    
+    def buscar_por_id(self, id_produto: str) -> ItensFesta | None:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+
+        query = """
+        SELECT
+            p.id_produto,
+            p.nome,
+            p.descricao,
+            p.valor_base,
+            p.status_disponibilidade
+        FROM produto p
+        JOIN produto_naopersonalizavel np
+            ON np.fk_produto_id_produto = p.id_produto
+        JOIN itens_festa i
+            ON i.fk_produto_naopersonalizavel = p.id_produto
+        WHERE p.id_produto = %s;
+        """
+
+        cursor.execute(query, (id_produto,))
+        linha = cursor.fetchone()
+        cursor.close()
+
+        return ItensFesta(*linha) if linha else None
+    
+    def inserir_itens_festa(self, itens_festa: ItensFesta) -> str:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO produto (nome, descricao, valor_base, status_disponibilidade)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id_produto;
+            """, (
+                itens_festa.nome,
+                itens_festa.descricao,
+                itens_festa.valor_base,
+                itens_festa.status_disponibilidade,
+            ))
+        id_produto = cursor.fetchone()[0]
+
+        cursor.execute("""
+            INSERT INTO produto_naopersonalizavel (fk_produto_id_produto)
+            VALUES (%s);
+            """, (id_produto,))
+
+        cursor.execute("""
+            INSERT INTO itens_festa (fk_produto_naopersonalizavel)
+            VALUES (%s);
+            """, (id_produto,))
+
+        conn.commit()
+        cursor.close()
+        return id_produto   
