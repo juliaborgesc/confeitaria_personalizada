@@ -5,6 +5,34 @@ class IngredientesController:
     def __init__(self, db):
         self.repo = IngredientesRepository(db)
 
+    def executar(self):
+        while True:
+            print("\n" + "="*50)
+            print("   SISTEMA DE GERENCIAMENTO DE INGREDIENTES")
+            print("="*50)
+            print("1 - Gerenciar Massas")
+            print("2 - Gerenciar Recheios")
+            print("3 - Gerenciar Coberturas")
+            print("4 - Gerenciar Toppings")
+            print("0 - Sair")
+            print("="*50)
+
+            opcao = input("\nEscolha uma opção: ").strip()
+
+            if opcao == "1":
+                self.menu_massas()
+            elif opcao == "2":
+                self.menu_recheios()
+            elif opcao == "3":
+                self.menu_coberturas()
+            elif opcao == "4":
+                self.menu_toppings()
+            elif opcao == "0":
+                print("\nSaindo do sistema. Até logo!")
+                break
+            else:
+                print("\n Opção inválida!")
+
     # ==================== MASSAS ====================
     def menu_massas(self):
         while True:
@@ -59,11 +87,10 @@ class IngredientesController:
 
     def inserir_massa(self):
         print("\n--- INSERIR NOVA MASSA ---")
-        id_massa = input("ID da massa: ").strip()
         nome = input("Nome: ").strip()
-        status = input("Disponível? (s/n): ").strip().lower() == 's'
+        status_disponibilidade = input("Disponível? (s/n): ").strip().lower() == 's'
         
-        massa = Massa(id_massa, nome, status)
+        massa = Massa(nome, status_disponibilidade)
         try:
             self.repo.inserir_massa(massa)
             print("\n Massa inserida com sucesso!")
@@ -84,7 +111,7 @@ class IngredientesController:
         status_input = input("Disponível? (s/n/Enter para manter): ").strip().lower()
         status = massa.status_disponibilidade if status_input == '' else (status_input == 's')
         
-        massa_atualizada = Massa(id_massa, nome, status)
+        massa_atualizada = Massa(nome, status, id_massa)
         try:
             self.repo.atualizar_massa(massa_atualizada)
             print("\n Massa atualizada com sucesso!")
@@ -159,12 +186,11 @@ class IngredientesController:
 
     def inserir_recheio(self):
         print("\n--- INSERIR NOVO RECHEIO ---")
-        id_recheio = input("ID do recheio: ").strip()
         nome = input("Nome: ").strip()
         valor_adc = float(input("Valor adicional: ").strip())
         status = input("Disponível? (s/n): ").strip().lower() == 's'
         
-        recheio = Recheio(id_recheio, nome, status, valor_adc)
+        recheio = Recheio(nome, status, valor_adc)
         try:
             self.repo.inserir_recheio(recheio)
             print("\n Recheio inserido com sucesso!")
@@ -187,7 +213,7 @@ class IngredientesController:
         status_input = input("Disponível? (s/n/Enter para manter): ").strip().lower()
         status = recheio.status_disponibilidade if status_input == '' else (status_input == 's')
         
-        recheio_atualizado = Recheio(id_recheio, nome, status, valor_adc)
+        recheio_atualizado = Recheio(nome, status, valor_adc, id_recheio)
         try:
             self.repo.atualizar_recheio(recheio_atualizado)
             print("\n Recheio atualizado com sucesso!")
@@ -261,11 +287,10 @@ class IngredientesController:
 
     def inserir_cobertura(self):
         print("\n--- INSERIR NOVA COBERTURA ---")
-        id_cobertura = input("ID da cobertura: ").strip()
         nome = input("Nome: ").strip()
         status = input("Disponível? (s/n): ").strip().lower() == 's'
         
-        cobertura = Cobertura(id_cobertura, nome, status)
+        cobertura = Cobertura(nome, status)
         try:
             self.repo.inserir_cobertura(cobertura)
             print("\n Cobertura inserida com sucesso!")
@@ -286,7 +311,7 @@ class IngredientesController:
         status_input = input("Disponível? (s/n/Enter para manter): ").strip().lower()
         status = cobertura.status_disponibilidade if status_input == '' else (status_input == 's')
         
-        cobertura_atualizada = Cobertura(id_cobertura, nome, status)
+        cobertura_atualizada = Cobertura(nome, status, id_cobertura)
         try:
             self.repo.atualizar_cobertura(cobertura_atualizada)
             print("\n Cobertura atualizada com sucesso!")
@@ -361,12 +386,11 @@ class IngredientesController:
 
     def inserir_topping(self):
         print("\n--- INSERIR NOVO TOPPING ---")
-        id_topping = input("ID do topping: ").strip()
         nome = input("Nome: ").strip()
         valor_adc = float(input("Valor adicional: ").strip())
         status = input("Disponível? (s/n): ").strip().lower() == 's'
         
-        topping = Topping(id_topping, nome, status, valor_adc)
+        topping = Topping(nome, status, valor_adc)
         try:
             self.repo.inserir_topping(topping)
             print("\n Topping inserido com sucesso!")
@@ -389,7 +413,7 @@ class IngredientesController:
         status_input = input("Disponível? (s/n/Enter para manter): ").strip().lower()
         status = topping.status_disponibilidade if status_input == '' else (status_input == 's')
         
-        topping_atualizado = Topping(id_topping, nome, status, valor_adc)
+        topping_atualizado = Topping(nome, status, valor_adc, id_topping)
         try:
             self.repo.atualizar_topping(topping_atualizado)
             print("\n Topping atualizado com sucesso!")

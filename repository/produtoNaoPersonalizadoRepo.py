@@ -347,4 +347,31 @@ class BoloProntoRepository:
         cursor.close()
         
         return None
+
+class ProdutoNaoPersonalizadoRepository:
+    def __init__(self, db):
+        self.db = db
+        self.bebidas_repo = BebidasRepository(db)
+        self.itens_festa_repo = ItensFestaRepository(db)
+        self.bolo_pronto_repo = BoloProntoRepository(db)
     
+    def listar_nao_personalizaveis(self):
+        bebidas = self.bebidas_repo.listar_bebidas()
+        itens_festa = self.itens_festa_repo.listar_itens_festa()
+        bolos_pronto = self.bolo_pronto_repo.listar_bolos_pronto()
+        return bebidas + itens_festa + bolos_pronto
+    
+    def buscar_nao_personalizavel_por_id(self, id_produto):
+        bebidas = self.bebidas_repo.buscar_bebida(id_produto)
+        if bebidas:
+            return bebidas
+        
+        itens_festa = self.itens_festa_repo.buscar_item_festa(id_produto)
+        if itens_festa:
+            return itens_festa
+        
+        bolos_pronto = self.bolo_pronto_repo.buscar_bolo_pronto(id_produto)
+        if bolos_pronto:
+            return bolos_pronto
+        
+        return None

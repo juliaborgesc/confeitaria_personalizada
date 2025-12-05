@@ -1,5 +1,5 @@
-from controller.ingredientesController import ProdutoController
+from view.adminView import MenuAdmin
 
 if __name__ == "__main__":
-    controller = ProdutoController()
-    controller.executar()
+    menu = MenuAdmin()
+    menu.exibir_menu_principal()

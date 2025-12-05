@@ -121,3 +121,17 @@ class ProdutoPersonalizadoRepository:
             cobertura=Cobertura(cobertura, True),
             topping=Topping(topping, True) if topping else None
         )
+
+    def listar_personalizaveis(self):
+        return self.listar_todos()
+    
+    def buscar_personalizavel_por_id(self, id_produto):
+        return self.buscar_por_id(id_produto)
+    
+    def inserir_personalizavel(self, produto):
+        # Implementar inserção se necessário
+        pass
+    
+    def atualizar_personalizavel(self, produto):
+        # Implementar atualização se necessário
+        pass

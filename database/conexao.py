@@ -15,7 +15,7 @@ class Database:
         
         self.connection = None
 
-    def conectar(self) -> psycopg2.Connection:
+    def conectar(self):
         try:
             self.connection = psycopg2.connect(
                 host=self.host,
@@ -32,5 +32,8 @@ class Database:
             print(f"Erro ao conectar: {err}")
             return None
             
-    def criar_connection(self) -> psycopg2.Connection:
+    def criar_connection(self):
+        return self.conectar()
+    
+    def get_connection(self):
         return self.conectar()

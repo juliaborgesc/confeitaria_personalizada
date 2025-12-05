@@ -1,4 +1,6 @@
 from model.produtoModel import Produto
+from model.produtoPersonalizavelModel import ProdutoPersonalizavel
+from model.produtoNaoPersonalizavelModel import ProdutoNaoPersonalizavel
 
 class ProdutoRepository:
     def __init__(self, db):
@@ -94,3 +96,48 @@ class ProdutoRepository:
         conn.commit()
 
         cursor.close()
+
+    # ==================== PRODUTOS PERSONALIZÁVEIS ====================
+    def listar_personalizaveis(self):
+        from repository.produtoPersonalizadoRepo import ProdutoPersonalizadoRepository
+        repo = ProdutoPersonalizadoRepository(self.db)
+        return repo.listar_personalizaveis()
+    
+    def buscar_personalizavel_por_id(self, id_produto):
+        from repository.produtoPersonalizadoRepo import ProdutoPersonalizadoRepository
+        repo = ProdutoPersonalizadoRepository(self.db)
+        return repo.buscar_personalizavel_por_id(id_produto)
+    
+    def inserir_personalizavel(self, produto):
+        from repository.produtoPersonalizadoRepo import ProdutoPersonalizadoRepository
+        repo = ProdutoPersonalizadoRepository(self.db)
+        return repo.inserir_personalizavel(produto)
+    
+    def atualizar_personalizavel(self, produto):
+        from repository.produtoPersonalizadoRepo import ProdutoPersonalizadoRepository
+        repo = ProdutoPersonalizadoRepository(self.db)
+        return repo.atualizar_personalizavel(produto)
+    
+    def deletar_produto(self, id_produto):
+        return self.excluir_produto(id_produto)
+
+    # ==================== PRODUTOS NÃO PERSONALIZÁVEIS ====================
+    def listar_nao_personalizaveis(self):
+        from repository.produtoNaoPersonalizadoRepo import ProdutoNaoPersonalizadoRepository
+        repo = ProdutoNaoPersonalizadoRepository(self.db)
+        return repo.listar_nao_personalizaveis()
+    
+    def buscar_nao_personalizavel_por_id(self, id_produto):
+        from repository.produtoNaoPersonalizadoRepo import ProdutoNaoPersonalizadoRepository
+        repo = ProdutoNaoPersonalizadoRepository(self.db)
+        return repo.buscar_nao_personalizavel_por_id(id_produto)
+    
+    def inserir_nao_personalizavel(self, produto):
+        from repository.produtoNaoPersonalizadoRepo import ProdutoNaoPersonalizadoRepository
+        repo = ProdutoNaoPersonalizadoRepository(self.db)
+        return repo.inserir_nao_personalizavel(produto)
+    
+    def atualizar_nao_personalizavel(self, produto):
+        from repository.produtoNaoPersonalizadoRepo import ProdutoNaoPersonalizadoRepository
+        repo = ProdutoNaoPersonalizadoRepository(self.db)
+        return repo.atualizar_nao_personalizavel(produto)
